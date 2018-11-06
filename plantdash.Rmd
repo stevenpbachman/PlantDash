@@ -4,72 +4,93 @@ author: By Steven Bachman
 output: 
   flexdashboard::flex_dashboard:
   #orientation: rows
-  vertical_layout: fill
-theme: yeti
-source_code: embed
+    theme: cosmo
+    source_code: embed
+vertical_layout: fill
 runtime: shiny
 ---
   
   
 ```{r setup, include=FALSE}
-#deployApp()
 library(flexdashboard)
 library(magrittr)
 library(readr)
 library(ggplot2)
 library(plotly)
+library(rgdal)
+library(DT)
+library(leaflet)
 
-# load data in 'global' chunk so it can be shared by all users of the dashboard
-#all_plants_sp <- read_csv("all.plants.RL_full.csv")
-all.plants.RL_full <- read_csv("all.plants.RL_full.csv", guess_max = 50000)
-
-all_plants_sp = all.plants.RL_full
-
+# load in the Red List data
+all_plants_sp <-
+read_csv("all.plants.RL_full.csv", guess_max = 50000)
 
 # change the levels to remove old categories
-all_plants_sp$category[all_plants_sp$category=="LR/nt"] = "NT"
-all_plants_sp$category[all_plants_sp$category=="LR/cd"] = "LC"
-all_plants_sp$category[all_plants_sp$category=="LR/lc"] = "LC"
+all_plants_sp$category[all_plants_sp$category == "LR/nt"] = "NT"
+all_plants_sp$category[all_plants_sp$category == "LR/cd"] = "LC"
+all_plants_sp$category[all_plants_sp$category == "LR/lc"] = "LC"
 
 # set order of levels
-all_plants_sp$category = factor(all_plants_sp$category, levels = c("EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"))
+all_plants_sp$category = factor(all_plants_sp$category,
+levels = c("EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"))
 
 # set groups
 All_plants = all_plants_sp
 
-Land_plants = subset(all_plants_sp, all_plants_sp$phylum == "TRACHEOPHYTA" | 
-                       all_plants_sp$phylum == "ANTHOCERATOPHYTA" | 
-                       all_plants_sp$phylum == "ANTHOCERATOPHYTA" | 
-                       all_plants_sp$phylum == "MARCHANTIOPHYTA")
+Land_plants = subset(
+all_plants_sp,
+all_plants_sp$phylum == "TRACHEOPHYTA" |
+all_plants_sp$phylum == "ANTHOCERATOPHYTA" |
+all_plants_sp$phylum == "ANTHOCERATOPHYTA" |
+all_plants_sp$phylum == "MARCHANTIOPHYTA"
+)
 
-Vascular_plants =  subset(all_plants_sp, all_plants_sp$phylum == "TRACHEOPHYTA" )
+Vascular_plants =  subset(all_plants_sp, all_plants_sp$phylum == "TRACHEOPHYTA")
 
-Seed_plants = subset(all_plants_sp, all_plants_sp$class == "CYCADOPSIDA" |
-                       all_plants_sp$class == "GINKGOOPSIDA" |
-                       all_plants_sp$class == "GNETOPSIDA" |
-                       all_plants_sp$class == "PINOPSIDA" |
-                       all_plants_sp$class == "LILIOPSIDA" |
-                       all_plants_sp$class == "MAGNOLIOPSIDA")
+Seed_plants = subset(
+all_plants_sp,
+all_plants_sp$class == "CYCADOPSIDA" |
+all_plants_sp$class == "GINKGOOPSIDA" |
+all_plants_sp$class == "GNETOPSIDA" |
+all_plants_sp$class == "PINOPSIDA" |
+all_plants_sp$class == "LILIOPSIDA" |
+all_plants_sp$class == "MAGNOLIOPSIDA"
+)
 
-Flowering_plants = subset(all_plants_sp, all_plants_sp$class == "LILIOPSIDA" |
-                            all_plants_sp$class == "MAGNOLIOPSIDA" )
+Flowering_plants = subset(
+all_plants_sp,
+all_plants_sp$class == "LILIOPSIDA" |
+all_plants_sp$class == "MAGNOLIOPSIDA"
+)
 
-Gymnosperms = subset(all_plants_sp, all_plants_sp$class == "CYCADOPSIDA" |
-                       all_plants_sp$class == "GINKGOOPSIDA" |
-                       all_plants_sp$class == "GNETOPSIDA" |
-                       all_plants_sp$class == "PINOPSIDA" )
+Gymnosperms = subset(
+all_plants_sp,
+all_plants_sp$class == "CYCADOPSIDA" |
+all_plants_sp$class == "GINKGOOPSIDA" |
+all_plants_sp$class == "GNETOPSIDA" |
+all_plants_sp$class == "PINOPSIDA"
+)
 
-Green_Algae = subset(all_plants_sp, all_plants_sp$phylum == "CHAROPHYTA" |
-                       all_plants_sp$phylum == "CHLOROPHYTA")
+Green_Algae = subset(
+all_plants_sp,
+all_plants_sp$phylum == "CHAROPHYTA" |
+all_plants_sp$phylum == "CHLOROPHYTA"
+)
 
-Mosses = subset(all_plants_sp, all_plants_sp$phylum == "BRYOPHYTA" |
-                  all_plants_sp$phylum == "MARCHANTIOPHYTA" |
-                  all_plants_sp$phylum == "ANTHOCERATOPHYTA")
+Mosses = subset(
+all_plants_sp,
+all_plants_sp$phylum == "BRYOPHYTA" |
+all_plants_sp$phylum == "MARCHANTIOPHYTA" |
+all_plants_sp$phylum == "ANTHOCERATOPHYTA"
+)
 
-Red_Algae =  subset(all_plants_sp, all_plants_sp$phylum == "RHODOPHYTA" )
+Red_Algae =  subset(all_plants_sp, all_plants_sp$phylum == "RHODOPHYTA")
 
-Ferns_and_Allies = subset(all_plants_sp, all_plants_sp$class == "POLYPODIOPSIDA" |
-                            all_plants_sp$class == "LYCOPODIOPSIDA")
+Ferns_and_Allies = subset(
+all_plants_sp,
+all_plants_sp$class == "POLYPODIOPSIDA" |
+all_plants_sp$class == "LYCOPODIOPSIDA"
+)
 
 # number of described plants using different gorupings - from Nic Lughadha 2016 Counting Counts
 All_plants_tot = 450000 # work this out
@@ -97,38 +118,76 @@ Global status {data-orientation=columns}
 
 
 ```{r}
-#multi select
+# Add options to the select input widget
 
-selectInput("Group", label = ("Select plant group"), choices = list("All plants" = "All_plants" , "Land plants" = "Land_plants" , "Vascular plants" = "Vascular_plants", "Seed plants" = "Seed_plants", "Flowering plants" = "Flowering_plants", "Gymnosperms" = "Gymnosperms","Ferns and Allies" = "Ferns_and_Allies", "Mosses" = "Mosses","Green Algae" = "Green_Algae","Red Algae" = "Red_Algae"), 
-            selected = "All_plants")
+selectInput(
+  "Group",
+  label = ("Select plant group"),
+  choices = list(
+    "All plants" = "All_plants" ,
+    "Land plants" = "Land_plants" ,
+    "Vascular plants" = "Vascular_plants",
+    "Seed plants" = "Seed_plants",
+    "Flowering plants" = "Flowering_plants",
+    "Gymnosperms" = "Gymnosperms",
+    "Ferns and Allies" = "Ferns_and_Allies",
+    "Mosses" = "Mosses",
+    "Green Algae" = "Green_Algae",
+    "Red Algae" = "Red_Algae"
+  ),
+  selected = "All_plants"
+)
 
-sliderInput("sliderYear", label = "Select year range", min = 1998, 
-            max = 2018, value = c(1998, 2018), sep = "")
+# Configure slider widget
+
+sliderInput(
+  "sliderYear",
+  label = "Select year range",
+  min = 1998,
+  max = 2018,
+  value = c(1998, 2018),
+  sep = ""
+)
 ```
 
 
 
-Bar chart shows number of species in each Red List category for selected group.
+
 
 Column {data-width=700}
 -------------------------------------
 ### Count of species per Red List category
   
 ```{r}
+#  
 
 renderPlot({
-  
-  myinput = get(input$Group)
-  
-  ggplot(myinput[which(myinput$published_year >= input$sliderYear[1] & 
-                         myinput$published_year <= input$sliderYear[2]),], 
-         aes(category)) + 
-    geom_bar(aes(fill = category)) +
-    theme_minimal() +
-    scale_fill_manual(
-      values = c("#080100", "#4A235A", "#d5392a", "#D35400", "#F1C40F", "#A9DFBF", "#1E8449", "#AAAAAA"),
-      labels = c("EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"),
-      drop = FALSE)
+
+# get the selection group    
+myinput = get(input$Group)
+
+# build the plot with selection group and combine with year slider selection
+ggplot(myinput[which(
+  myinput$published_year >= input$sliderYear[1] &
+  myinput$published_year <= input$sliderYear[2]
+  ),],
+  aes(category)) +
+  geom_bar(aes(fill = category)) +
+  theme_minimal() +
+  scale_fill_manual(
+  values = c(
+  "#080100",
+  "#4A235A",
+  "#d5392a",
+  "#D35400",
+  "#F1C40F",
+  "#A9DFBF",
+  "#1E8449",
+  "#AAAAAA"
+  ),
+  labels = c("EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"),
+  drop = FALSE
+  )
 })
 ```
 
@@ -139,11 +198,13 @@ Column {data-width=400}
 ### Species assessments
 
 ```{r}
-# get total 
+# get total number of species assessments and render as a Value Box
 renderValueBox({
   myinput = get(input$Group)
-  get_group = myinput[which(myinput$published_year >= input$sliderYear[1] & 
-                              myinput$published_year <= input$sliderYear[2]),]
+  get_group = myinput[which(
+  myinput$published_year >= input$sliderYear[1] &
+  myinput$published_year <= input$sliderYear[2]
+  ),]
   group_rows = nrow(get_group)
   valueBox(prettyNum(group_rows, big.mark = ","), color = "#acacac")
 })
@@ -152,15 +213,13 @@ renderValueBox({
 ### % of group assessed
 
 ```{r}
+# get total number of species assessments and divide by total # in group to get %, then render as a Value Box
 renderValueBox({
   myinput = get(input$Group)
-  mytotal = paste0(input$Group,"_tot")
+  mytotal = paste0(input$Group, "_tot")
   mytotal = get(mytotal)
   get_group = myinput
-  
-  #percent_T = round((nrow_threatened/group_rows_T)*100, digits = 1)
-  group_rows = round((nrow(get_group)/mytotal)*100, digits = 1)
-  
+  group_rows = round((nrow(get_group) / mytotal) * 100, digits = 1)
   valueBox(group_rows, icon = "percentage", color = "#acacac")
 })
 ```
@@ -169,23 +228,23 @@ renderValueBox({
 ### % threatened (CR + EN + VU)
 
 ```{r}
+# get total number of threatened assessments as % of total and render as a Value Box
 renderValueBox({
   myinput = get(input$Group)
-  get_group_T = myinput[which(myinput$published_year >= input$sliderYear[1] & 
-                                myinput$published_year <= input$sliderYear[2]),]
+  get_group_T = myinput[which(
+  myinput$published_year >= input$sliderYear[1] &
+  myinput$published_year <= input$sliderYear[2]
+  ),]
   group_rows_T = nrow(get_group_T)
-  threatened = subset(get_group_T, category == "CR"|category == "EN"|category =="VU")
+  threatened = subset(get_group_T, category == "CR" |
+  category == "EN" | category == "VU")
   nrow_threatened = nrow(threatened)
-  #threatened + (threatened/non-DD) * DD
-  percent_T = round((nrow_threatened/group_rows_T)*100, digits = 1)
-  
-  myicon = ifelse(percent_T > 20, "fa-arrow-up","arrows-alt-h")
+  percent_T = round((nrow_threatened / group_rows_T) * 100, digits = 1)
+  myicon = ifelse(percent_T > 20, "fa-arrow-up", "arrows-alt-h")
   mycolour = ifelse(percent_T > 20, "#d5392a", "#acacac")
   val = percent_T
-  
-  valueBox(val, 
-           #icon = myicon, 
-           color =  mycolour)
+  valueBox(val,
+  color =  mycolour)
 })
 ```
 
@@ -193,45 +252,47 @@ renderValueBox({
 ### % Data Deficient
 
 ```{r}
+# get total number of data deficient assessments as % of total and render as a Value Box
 renderValueBox({
   myinput = get(input$Group)
-  get_group_DD = myinput[which(myinput$published_year >= input$sliderYear[1] & 
-                                 myinput$published_year <= input$sliderYear[2]),]
-  get_group_onlyDD = get_group_DD[which(get_group_DD$category == "DD"),]
+  get_group_DD = myinput[which(
+  myinput$published_year >= input$sliderYear[1] &
+  myinput$published_year <= input$sliderYear[2]
+  ), ]
+  get_group_onlyDD = get_group_DD[which(get_group_DD$category == "DD"), ]
   group_rows_DD = nrow(get_group_DD)
   group_rows_onlyDD = nrow(get_group_onlyDD)
-  proportion = round((group_rows_onlyDD/group_rows_DD ) *100,digits = 1)
-  
-  myicon = ifelse(proportion > 40, "fa-arrow-up","arrows-alt-h")
+  proportion = round((group_rows_onlyDD / group_rows_DD) * 100, digits = 1)
+  myicon = ifelse(proportion > 40, "fa-arrow-up", "arrows-alt-h")
   mycolour = ifelse(proportion > 40, "#d5392a", "#acacac")
   val = proportion
-  
-  valueBox(val, 
-           #icon = myicon, 
-           color =  mycolour)
+  valueBox(val,
+  #icon = myicon,
+  color =  mycolour)
 })
 ```
 
 ### Increase in number of assessments since `r max(all_plants_sp$published_year)-1 `
 
 ```{r}
+# get total number of assessments since last year
 renderValueBox({
   get_group = get(input$Group)
-  
   group_rows = nrow(subset(get_group, subset = published_year == max(published_year)))
-  
-  valueBox(prettyNum(group_rows, big.mark = ","), icon = "fa-arrow-up", color = "#acacac")
+  valueBox(prettyNum(group_rows, big.mark = ","),
+  icon = "fa-arrow-up",
+  color = "#acacac")
 })
 ```
 
 ### Number of assessments > 10 years old
 
 ```{r}
+# get total number of assessments more than 10 years since maximum year
 renderValueBox({
   get_group = get(input$Group)
-  
-  group_rows = nrow(subset(get_group, subset = published_year < max(published_year)-10))
-  
+  group_rows = nrow(subset(get_group, subset = published_year < max(published_year) -
+  10))
   valueBox(prettyNum(group_rows, big.mark = ","), color = "#acacac")
 })
 ```
@@ -264,15 +325,15 @@ Row {data-height=600 .tabset .tabset-fade}
 -------------------------------------
 ### Assessment count per year
   
-  ```{r, }
-
-### Count of Red List Assessments for plant species over time (Kingdom = PLANTAE)
-all_plants_sp_pubyear = subset(all_plants_sp, published_year >2002 & published_year < 2018)
-
+```{r, }
+# Count of Red List Assessments for plant species over time 
 # filter out <2003 (old assessments, old criteria) and >2017 (2018 not finished yet)
-
+all_plants_sp_pubyear = subset(all_plants_sp, published_year > 2002 &
+                                 published_year < 2018)
+                                 
+# plot as a bar chart
 ggplotly(
-  ggplot(all_plants_sp_pubyear, aes(as.factor(published_year)))+ 
+  ggplot(all_plants_sp_pubyear, aes(as.factor(published_year))) +
     geom_bar(fill = "#FF6666") +
     theme_minimal() +
     labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "")
@@ -282,60 +343,128 @@ ggplotly(
 ### Species description vs Red List assessment date
 
 ```{r, }
+# load in the data on 
 diffplot <- read_csv("diffplot.csv", guess_max = 50000)
 
-# adding in a single record to get a point for 2005 - must be another way to do this...
-#extralev = data.frame(published_year = "2005", age = "Unknown")
-#diffplot = rbind(diffplot, extralev)
+# adding in a single record to get a point for 2005 - must be a better way to do this...
+extralev = data.frame(published_year = "2005", age = "Unknown")
+diffplot = rbind(diffplot, extralev)
 
+# subset the data on number of new species described
 #tax.nov.plot = subset(tax.nov.year, tax.nov.year$Year >="2003" & tax.nov.year$Year < "2018")
 
 # now summarise the ratio of old and new for each red list assessment year
-library(ggplot2)
-fig_2 = ggplot() + 
-  geom_bar(data = diffplot, aes(x = as.factor(published_year), fill = as.factor(age)), 
-           position = position_dodge(preserve = 'single')) + 
+fig_2 = ggplot() +
+  geom_bar(
+    data = diffplot,
+    aes(x = as.factor(published_year), fill = as.factor(age)),
+    position = position_dodge(preserve = 'single')
+  ) +
   
   labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "") +
   theme_minimal() +
-  scale_fill_manual(values = c("New" = "#f37735", "Old" = "#ffc425", "Unknown" = "light grey")) +
-  #geom_point(data = tax.nov.plot, aes(x = as.factor(Year), y = Count), stat = "identity", size = 2, shape = 16) +
-  #scale_colour_manual(name = "Year", labels = "test", values = "black") +
-  scale_x_discrete(expand = c(0, 0)) + scale_y_continuous(expand = c(0,100)) 
-
-ggplotly(
-  fig_2
-)
+  scale_fill_manual(values = c(
+    "New" = "#f37735",
+    "Old" = "#ffc425",
+    "Unknown" = "light grey"
+  )) +
+  scale_x_discrete(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 100))
+ggplotly(fig_2)
 ```
 
 
 ### Assessment language
 ```{r, }
-
-# show bar with breakdown by language (fill)
-# get language from new red list download page - import file
-# ask ackbar to add this to API?
-
 # import the Red List download
-assessments_plants_2018_1 <- read_csv("assessments_plants_2018_1.csv", guess_max = 50000)
+assessments_plants_2018_1 <-
+read_csv("assessments_plants_2018_1.csv", guess_max = 50000)
 
 # assign the NAs as English
-assessments_plants_2018_1$language[is.na(assessments_plants_2018_1$language)] <- "English"
+assessments_plants_2018_1$language[is.na(assessments_plants_2018_1$language)] <-
+"English"
 
-# query out pre 2003
-assessments_plants_2018_1 = subset(assessments_plants_2018_1, yearPublished >2002)
+# query out pre 2003, but leave in 2018 as this includes french 
+assessments_plants_2018_1 = subset(assessments_plants_2018_1, yearPublished >
+2002)
 
-# plot
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") 
+# plot the graph
+cbPalette <-
+c(
+"#999999",
+"#E69F00",
+"#56B4E9",
+"#009E73",
+"#F0E442",
+"#0072B2",
+"#D55E00",
+"#CC79A7"
+)
 rl_language = ggplot(data = assessments_plants_2018_1, aes(x = factor(yearPublished), fill = language))
 rl_language = rl_language + geom_bar() +
-  theme_minimal() +
-  scale_fill_manual(values=cbPalette) +
-  labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "")
+theme_minimal() +
+scale_fill_manual(values = cbPalette) +
+labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "")
 
-ggplotly(
-  rl_language
-)
+ggplotly(rl_language)
 
 ```
 
+
+Specialist groups {data-orientation=rows}
+===================================== 
+
+Inputs{.sidebar}
+-------------------------------------
+  Red List Version 2018-1
+
+- [IUCN Red List](http://www.iucnredlist.org/)
+
+
+```{r, include=FALSE}
+all_sg_rls = readOGR(dsn = "shapefiles", layer = "all_SG_RLA")
+```
+
+Row {data-height=600}
+-------------------------------------
+```{r}
+# import the 
+shared_SGs = all_sg_rls
+
+renderLeaflet({
+  
+  leaflet(data = shared_SGs) %>%
+    addTiles()  %>%
+    setView(lat=10, lng=0, zoom=2) %>%
+    addPolygons(fillColor = ~Group,
+                popup = paste(shared_SGs$Group, "<br>", 
+                              "<b><a href=",shared_SGs$Website,">Web link</a></b>", "<br>", 
+                              "<b>Chair: </b>", shared_SGs$Chair,"<br>",
+                              "<b>Chair email: </b>", shared_SGs$Email,"<br>",
+                              "<b>RLA: </b>", shared_SGs$RLA,"<br>",
+                              "<b>RLA email: </b>", shared_SGs$RLA_email,"<br>"),
+                #label = ~Group,
+                stroke = TRUE, 
+                color = "black",
+                weight = 2,
+                fillOpacity = 0.2,
+                highlight = highlightOptions(weight = 5,
+                                             color = "red",
+                                             fillOpacity = 0.7,
+                                             bringToFront = TRUE))
+  
+})
+
+```
+
+Row {data-height=600}
+-------------------------------------
+  
+### Taxonomic and thematic specialist group information
+  
+```{r}
+# import the specialist group data
+PlantSGsRLAs <- read.csv("PlantSGsRLAs.csv", encoding = "UTF-16")
+
+# finish page with table view - DT seems to work well
+datatable(PlantSGsRLAs, escape = FALSE)
+```
