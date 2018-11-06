@@ -1,41 +1,34 @@
-Group,Type,Chair,Email,RLA,RLA_email,Website
-"Bryophyte Specialist Group (mosses, liverworts, and hornworts)",Taxonomic,Irene Bisang; Jacques van Rooy,Irene.Bisang@nrm.se; J.vanRooy@sanbi.org.za,Ariel Bergamini,ariel.bergamini@wsl.ch,<a href=https://www.slu.se/en/collaborative-centres-and-projects/bryoconservation>Web link</a>
-Cactus and Succulent Plant Specialist Group,Taxonomic,Barbara Goettsch; Kimberlie McCue,Barbara.GOETTSCH@iucn.org; kmccue@dbg.org,Raul Puente-Martinez,rpuente@dbg.org,<a href=https://www.iucn.org/ssc-groups/plants-fungi/cactus-and-succulent-plants-specialist-group>Web link</a>
-Carnivorous Plant Specialist Group,Taxonomic,Robert Cantley,chair@iucn-cpsg.org,Charles Clarke,clarke.charles1@gmail.com,<a href=http://www.iucn-cpsg.org>Web link</a>
-Conifer Specialist Group,Taxonomic,Martin Gardner,M.Gardner@rbge.ac.uk,Philip Thomas,p.thomas@rbge.org.uk,<a href=http://threatenedconifers.rbge.org.uk>Web link</a>
-Crop Wild Relative Specialist Group,Thematic,Ehsan Dulloo; Nigel Maxted,e.dulloo@cgiar.org; nigel.maxted@dial.pipex.com,,,<a href=http://www.cwrsg.org/index.asp>Web link</a>
-Cycad Specialist Group,Taxonomic,John Donaldson; Patrick Griffith,J.Donaldson@sanbi.org.za; patrick@montgomerybotanical.org,,,<a href=http://www.cycadgroup.org>Web link</a>
-Freshwater Plant Specialist Group,Thematic,Richard Lansdown,rlansdown@ardeola.demon.co.uk,Melanie Bilz,mela.bilz@gmx.de,<a href=https://www.iucn.org/species/specialist-groups/about/ssc-specialist-groups-and-red-list-authorities-directory/plants-0>Web link</a>
-Global Trees Specialist Group,Thematic,Sara Oldfield; Adrian Newton,sara@saraoldfield.net; ANewton@bournemouth.ac.uk; malin.rivers@bgci.org,Malin Rivers,malin.rivers@bgci.org,<a href=http://globaltrees.org/iucn-ssc-global-tree-specialist-group>Web link</a>
-Mangrove Specialist Group,Thematic,Joe Lee,joesylee@@cuhk.edu.hk,,,<a href=https://www.zsl.org/iucn-ssc-mangrove-specialist-group>Web link</a>
-Medicinal Plant Specialist Group,Thematic,Danna Leaman; Anastasiya Timoshyna,djl@green-world.org; anastasiya.timoshyna@traffic.org,Danna Leaman,djl@green-world.org,<a href=https://www.iucn.org/ssc-groups/plants-fungi/medicinal-plant-specialist-group>Web link</a>
-Orchid Specialist Group,Taxonomic,Mike Fay,m.fay@kew.org,Hassan Rankou,h.rankou@kew.org,<a href=https://www.iucn.org/ssc-groups/orchids-sg/plants-fungi/orchid-specialist-group>Web link</a>
-Palm Specialist Group,Taxonomic,Thomas Couvreur,thomas.couvreur@ird.fr,Lauren Gardiner,l.gardiner@kew.org,<a href=https://www.iucn.org/ssc-groups/plants-fungi/palm-specialist-group>Web link</a>
-Seagrass Specialist Group,Taxonomic,Fred Short,fred.short@unh.edu,Brooke Sullivan,brooke@backtonaturedesign.com,<a href=http://www.dugongconservation.org/interview/fred-short/>Web link</a>
-Arabian Plant Specialist Group,Geographic,Ibrahim Aldjain,abudjain@hotmail.com,Vacant, ,<a href=http://www.iucnarabianpsg.org/>Web link</a>
-Arctic Plant Specialist Group,Geographic,Mora Aronsson; Henry Väre,mora.aronsson@slu.se; henry.vare@helsinki.fi,Under appointment,Under appointment,<a href=http://cmsdata.iucn.org/downloads/arctic_plant_proofed.pdf>Web link</a>
-Brazil Plant Red List Authority,Geographic,Gustavo Martinelli,gmartine@jbrj.gov.br ,Miguel Moraes,miguel@cncflora.net,<a href=http://cncflora.jbrj.gov.br/portal/pt-br/listavermelha>Web link</a>
-Caucasus Plant Red List Authority,Geographic,George Nakhutsrishvilli,botanins@yahoo.com, , ,<a href=http://cmsdata.iucn.org/downloads/caucasus_plant_rla_proofed.pdf>Web link</a>
-Central African Plant Red List Authority,Geographic,Tariq Stévart; Jean-Michel Onana,tariq.stevart@mobot.org; jeanmichelonan@gmail.com, , ,<a href= http://cmsdata.iucn.org/downloads/central_africa_plant_rla.pdf>Web link</a>
-Chinese Plant Specialist Group,Geographic,Qin Hain-ing,hainingqin@ibcas.ac.cn ,Liu Quanru,liuquanru@sohu.com ,<a href=https://www.iucn.org/sites/dev/files/content/documents/2016-2017_china_plant_sg_report.pdf>Web link</a>
-Cuban Plant Specialist Group,Geographic,Luis Roberto González Torres,lrgonzaleztorres@gmail.com,Luis Roberto González Torres,lrgonzaleztorres@gmail.com,<a href=http://cmsdata.iucn.org/downloads/cuban_plant_proofed.pdf>Web link</a>
-Eastern Africa Plant Red List Authority,Geographic,Quentin Luke,quentinluke1@gmail.com,"Vacant
-", ,<a href=http://cmsdata.iucn.org/downloads/east_african_plant_rla_proofed.pdf>Web link</a>
-Galapagos Plant Specialist Group,Geographic,Alan Tye,"alantyealantye@gmail.com
-@gmail.com
-",Alan Tye,alantye@gmail.com,<a href=http://cmsdata.iucn.org/downloads/galapagos_plant_proofed.pdf>Web link</a>
-Hawaiian Plant Specialist Group,Geographic,Vickie Caraway,vlcaraway@gmail.com,Maggie Sporck Koehler,Margaret.J.Sporck-Koehler@hawaii.gov,"<a href=http://cmsdata.iucn.org/downloads/hawaii_plant_proofed.pdf
+Group,Type,Website
+Arctic Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/arctic_plant_proofed.pdf>Web link</a>
+Brazil Plant Red List Authority,Geographic,<a href=http://cncflora.jbrj.gov.br/portal/pt-br/listavermelha>Web link</a>
+"Bryophyte Specialist Group (mosses, liverworts, and hornworts)",Taxonomic,<a href=https://www.slu.se/en/collaborative-centres-and-projects/bryoconservation>Web link</a>
+Cactus and Succulent Plant Specialist Group,Taxonomic,<a href=https://www.iucn.org/ssc-groups/plants-fungi/cactus-and-succulent-plants-specialist-group>Web link</a>
+Carnivorous Plant Specialist Group,Taxonomic,<a href=http://www.iucn-cpsg.org>Web link</a>
+Caucasus Plant Red List Authority,Geographic,<a href=http://cmsdata.iucn.org/downloads/caucasus_plant_rla_proofed.pdf>Web link</a>
+Central African Plant Red List Authority,Geographic,<a href= http://cmsdata.iucn.org/downloads/central_africa_plant_rla.pdf>Web link</a>
+Chinese Plant Specialist Group,Geographic,<a href=https://www.iucn.org/sites/dev/files/content/documents/2016-2017_china_plant_sg_report.pdf>Web link</a>
+Colombian Plant Specialist Group,Geographic,<a href=https://www.iucn.org/sites/dev/files/content/documents/2016-2017_colombian_plant_sg_report.pdf>Web link</a>
+Conifer Specialist Group,Taxonomic,<a href=http://threatenedconifers.rbge.org.uk>Web link</a>
+Crop Wild Relative Specialist Group,Thematic,<a href=http://www.cwrsg.org/index.asp>Web link</a>
+Cuban Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/cuban_plant_proofed.pdf>Web link</a>
+Cycad Specialist Group,Taxonomic,<a href=http://www.cycadgroup.org>Web link</a>
+Eastern Africa Plant Red List Authority,Geographic,<a href=http://cmsdata.iucn.org/downloads/east_african_plant_rla_proofed.pdf>Web link</a>
+Freshwater Plant Specialist Group,Thematic,<a href=https://www.iucn.org/species/specialist-groups/about/ssc-specialist-groups-and-red-list-authorities-directory/plants-0>Web link</a>
+Galapagos Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/galapagos_plant_proofed.pdf>Web link</a>
+Global Trees Specialist Group,Thematic,<a href=http://globaltrees.org/iucn-ssc-global-tree-specialist-group>Web link</a>
+Hawaiian Plant Specialist Group,Geographic,"<a href=http://cmsdata.iucn.org/downloads/hawaii_plant_proofed.pdf
 >Web link</a>"
-Indian Subcontinent Plant Specialist Group,Geographic,M. Ahmedullah,m.ahmed@nic.in dr_ahmed@hotmail.com,M. Ahmedullah,m.ahmed@nic.in dr_ahmed@hotmail.com,<a href=http://cmsdata.iucn.org/downloads/indian_subcontinent_plants_proofed.pdf>Web link</a>
-Korean Plant Specialist Group,Geographic,Kim Yong-Shik,yongshik@ynu.ac.kr ,Chin-Sung Chang ,quercus@plaza.snu.ac.kr ,<a href=http://ynucc.yeungnam.ac.kr/~llape/kpsg/newslet.html>Web link</a>
-Macaronesian Island Plant Specialist Group,Geographic,Angel Bañares Baudet,abanbau@gobiernodecanarias.org,"Manuel Marrero Gomez
-",mvmargom@gobiernodecanarias.org  ,<a href=http://cmsdata.iucn.org/downloads/macaronesian_island_plants_sg_proofed.pdf>Web link</a>
-Madagascar Plant Specialist Group,Geographic,Vololoniaina Jeannoda,vololoniaina.jeannoda@gmail.com,Sylvie Renée Andriambololonera,sylvie.andriambololonera@mobot-mg.org,<a href=http://cmsdata.iucn.org/downloads/madagascar_proofed.pdf>Web link</a>
-Mascarene Island Plant Specialist Group,Geographic,Vikash Tatayah: Stéphane Baret,vtatayah@mauritian-wildlife.org; stephane.baret@reunion-parcnational.fr,Joel Duponx; Kersley Pynee,joel.duponx@orange.fr; kpynee@govmu.org,<a href=http://cmsdata.iucn.org/downloads/mascarene_plant_proofed.pdf>Web link</a>
-Mediterranean Plant Specialist Group,Geographic,Bertrand de Montmollin,gspim@biolconseils.ch,Bertrand de Montmollin,gspim@biolconseils.ch,<a href=http://cmsdata.iucn.org/downloads/mediterranean_island_plant_proofed.pdf>Web link</a>
-North American Plant Red List Authority,Geographic,Bruce Young,bruce_young@natureserve.org ,Anne Frances,anne_frances@natureserve.org,<a href=http://cmsdata.iucn.org/downloads/n_american_plant_rla_proofed.pdf>Web link</a>
-Southern African Plant Specialist Group,Geographic,Hermenegildo Matimele,Hermenegildo Matimele,Lize von Staden,L.vonStaden@sanbi.org.za,<a href=http://cmsdata.iucn.org/downloads/southern_african_plants_proofed.pdf>Web link</a>
-Temperate South American Plant Specialist Group,Geographic,Pablo de Maio ,phdemaio@gmail.com ,"Luis Oakley
-",luisoakley37@yahoo.com,<a href=https://www.iucn.org/sites/dev/files/content/documents/2016-2017_temperate_south_american_plant_sg_report.pdf>Web link</a>
-New Caledonia Plant Red List Authority,Geographic,Vincent Tanguy,coordination@endemia.nc, , ,<a href=http://endemia.nc/en/page/la-liste-rouge>Web link</a>
-Colombian Plant Specialist Group,Geographic,Cristina López-Gallego; Carolina Castellanos, ,Nestor García,nestor.garcia@javeriana.edu.co,<a href=https://www.iucn.org/sites/dev/files/content/documents/2016-2017_colombian_plant_sg_report.pdf>Web link</a>
+Korean Plant Specialist Group,Geographic,<a href=http://ynucc.yeungnam.ac.kr/~llape/kpsg/newslet.html>Web link</a>
+Macaronesian Island Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/macaronesian_island_plants_sg_proofed.pdf>Web link</a>
+Madagascar Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/madagascar_proofed.pdf>Web link</a>
+Mangrove Specialist Group,Thematic,<a href=https://www.zsl.org/iucn-ssc-mangrove-specialist-group>Web link</a>
+Mascarene Island Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/mascarene_plant_proofed.pdf>Web link</a>
+Medicinal Plant Specialist Group,Thematic,<a href=https://www.iucn.org/ssc-groups/plants-fungi/medicinal-plant-specialist-group>Web link</a>
+Mediterranean Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/mediterranean_island_plant_proofed.pdf>Web link</a>
+New Caledonia Plant Red List Authority,Geographic,<a href=http://endemia.nc/en/page/la-liste-rouge>Web link</a>
+North American Plant Red List Authority,Geographic,<a href=http://cmsdata.iucn.org/downloads/n_american_plant_rla_proofed.pdf>Web link</a>
+Orchid Specialist Group,Taxonomic,<a href=https://www.iucn.org/ssc-groups/orchids-sg/plants-fungi/orchid-specialist-group>Web link</a>
+Palm Specialist Group,Taxonomic,<a href=https://www.iucn.org/ssc-groups/plants-fungi/palm-specialist-group>Web link</a>
+Seagrass Specialist Group,Taxonomic,<a href=http://www.dugongconservation.org/interview/fred-short/>Web link</a>
+Southern African Plant Specialist Group,Geographic,<a href=http://cmsdata.iucn.org/downloads/southern_african_plants_proofed.pdf>Web link</a>
+Temperate South American Plant Specialist Group,Geographic,<a href=https://www.iucn.org/sites/dev/files/content/documents/2016-2017_temperate_south_american_plant_sg_report.pdf>Web link</a>

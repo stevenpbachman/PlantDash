@@ -5,6 +5,6 @@ account: spbachman
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 555403
-bundleId: 1685019
+bundleId: 1685590
 url: https://spbachman.shinyapps.io/plantdash/
-when: 1541506397.83362
+when: 1541521883.37549

@@ -176,14 +176,14 @@ ggplot(myinput[which(
   theme_minimal() +
   scale_fill_manual(
   values = c(
-  "#080100",
-  "#4A235A",
-  "#d5392a",
-  "#D35400",
-  "#F1C40F",
-  "#A9DFBF",
-  "#1E8449",
-  "#AAAAAA"
+  "#000000",
+  "#542344",
+  "#D81E05",
+  "#FC7F3F",
+  "#F9E814",
+  "#CCE226",
+  "#60C659",
+  "#D1D1C6"
   ),
   labels = c("EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"),
   drop = FALSE
