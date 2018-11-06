@@ -5,7 +5,7 @@ output:
   flexdashboard::flex_dashboard:
   #orientation: rows
   vertical_layout: fill
-theme: bootstrap
+theme: yeti
 source_code: embed
 runtime: shiny
 ---
@@ -13,8 +13,11 @@ runtime: shiny
   
 ```{r setup, include=FALSE}
 #deployApp()
-library(tidyverse)
-
+library(flexdashboard)
+library(magrittr)
+library(readr)
+library(ggplot2)
+library(plotly)
 
 # load data in 'global' chunk so it can be shared by all users of the dashboard
 #all_plants_sp <- read_csv("all.plants.RL_full.csv")
@@ -111,7 +114,7 @@ Column {data-width=700}
 -------------------------------------
 ### Count of species per Red List category
   
-  ```{r}
+```{r}
 
 renderPlot({
   
@@ -128,3 +131,211 @@ renderPlot({
       drop = FALSE)
 })
 ```
+
+Column {data-width=400}
+-------------------------------------
+  Summary statistics
+
+### Species assessments
+
+```{r}
+# get total 
+renderValueBox({
+  myinput = get(input$Group)
+  get_group = myinput[which(myinput$published_year >= input$sliderYear[1] & 
+                              myinput$published_year <= input$sliderYear[2]),]
+  group_rows = nrow(get_group)
+  valueBox(prettyNum(group_rows, big.mark = ","), color = "#acacac")
+})
+```
+
+### % of group assessed
+
+```{r}
+renderValueBox({
+  myinput = get(input$Group)
+  mytotal = paste0(input$Group,"_tot")
+  mytotal = get(mytotal)
+  get_group = myinput
+  
+  #percent_T = round((nrow_threatened/group_rows_T)*100, digits = 1)
+  group_rows = round((nrow(get_group)/mytotal)*100, digits = 1)
+  
+  valueBox(group_rows, icon = "percentage", color = "#acacac")
+})
+```
+
+
+### % threatened (CR + EN + VU)
+
+```{r}
+renderValueBox({
+  myinput = get(input$Group)
+  get_group_T = myinput[which(myinput$published_year >= input$sliderYear[1] & 
+                                myinput$published_year <= input$sliderYear[2]),]
+  group_rows_T = nrow(get_group_T)
+  threatened = subset(get_group_T, category == "CR"|category == "EN"|category =="VU")
+  nrow_threatened = nrow(threatened)
+  #threatened + (threatened/non-DD) * DD
+  percent_T = round((nrow_threatened/group_rows_T)*100, digits = 1)
+  
+  myicon = ifelse(percent_T > 20, "fa-arrow-up","arrows-alt-h")
+  mycolour = ifelse(percent_T > 20, "#d5392a", "#acacac")
+  val = percent_T
+  
+  valueBox(val, 
+           #icon = myicon, 
+           color =  mycolour)
+})
+```
+
+
+### % Data Deficient
+
+```{r}
+renderValueBox({
+  myinput = get(input$Group)
+  get_group_DD = myinput[which(myinput$published_year >= input$sliderYear[1] & 
+                                 myinput$published_year <= input$sliderYear[2]),]
+  get_group_onlyDD = get_group_DD[which(get_group_DD$category == "DD"),]
+  group_rows_DD = nrow(get_group_DD)
+  group_rows_onlyDD = nrow(get_group_onlyDD)
+  proportion = round((group_rows_onlyDD/group_rows_DD ) *100,digits = 1)
+  
+  myicon = ifelse(proportion > 40, "fa-arrow-up","arrows-alt-h")
+  mycolour = ifelse(proportion > 40, "#d5392a", "#acacac")
+  val = proportion
+  
+  valueBox(val, 
+           #icon = myicon, 
+           color =  mycolour)
+})
+```
+
+### Increase in number of assessments since `r max(all_plants_sp$published_year)-1 `
+
+```{r}
+renderValueBox({
+  get_group = get(input$Group)
+  
+  group_rows = nrow(subset(get_group, subset = published_year == max(published_year)))
+  
+  valueBox(prettyNum(group_rows, big.mark = ","), icon = "fa-arrow-up", color = "#acacac")
+})
+```
+
+### Number of assessments > 10 years old
+
+```{r}
+renderValueBox({
+  get_group = get(input$Group)
+  
+  group_rows = nrow(subset(get_group, subset = published_year < max(published_year)-10))
+  
+  valueBox(prettyNum(group_rows, big.mark = ","), color = "#acacac")
+})
+```
+
+Trends {data-orientation=rows}
+=====================================     
+  
+  Inputs{.sidebar}
+-------------------------------------
+  
+  Red List Version 2018-1
+
+- [IUCN Red List](http://www.iucnredlist.org/)
+
+
+
+
+**Left tab** shows count of assessments per year
+
+**Middle tab** shows breakdown of assessments categorised as 'new' (assessed within 5 years of being described) and 'old' (assessed > 5 years after description)
+
+**Right tab** shows trends in use of different assessment languages
+
+
+
+
+
+
+Row {data-height=600 .tabset .tabset-fade}
+-------------------------------------
+### Assessment count per year
+  
+  ```{r, }
+
+### Count of Red List Assessments for plant species over time (Kingdom = PLANTAE)
+all_plants_sp_pubyear = subset(all_plants_sp, published_year >2002 & published_year < 2018)
+
+# filter out <2003 (old assessments, old criteria) and >2017 (2018 not finished yet)
+
+ggplotly(
+  ggplot(all_plants_sp_pubyear, aes(as.factor(published_year)))+ 
+    geom_bar(fill = "#FF6666") +
+    theme_minimal() +
+    labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "")
+)
+```
+
+### Species description vs Red List assessment date
+
+```{r, }
+diffplot <- read_csv("diffplot.csv", guess_max = 50000)
+
+# adding in a single record to get a point for 2005 - must be another way to do this...
+#extralev = data.frame(published_year = "2005", age = "Unknown")
+#diffplot = rbind(diffplot, extralev)
+
+#tax.nov.plot = subset(tax.nov.year, tax.nov.year$Year >="2003" & tax.nov.year$Year < "2018")
+
+# now summarise the ratio of old and new for each red list assessment year
+library(ggplot2)
+fig_2 = ggplot() + 
+  geom_bar(data = diffplot, aes(x = as.factor(published_year), fill = as.factor(age)), 
+           position = position_dodge(preserve = 'single')) + 
+  
+  labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "") +
+  theme_minimal() +
+  scale_fill_manual(values = c("New" = "#f37735", "Old" = "#ffc425", "Unknown" = "light grey")) +
+  #geom_point(data = tax.nov.plot, aes(x = as.factor(Year), y = Count), stat = "identity", size = 2, shape = 16) +
+  #scale_colour_manual(name = "Year", labels = "test", values = "black") +
+  scale_x_discrete(expand = c(0, 0)) + scale_y_continuous(expand = c(0,100)) 
+
+ggplotly(
+  fig_2
+)
+```
+
+
+### Assessment language
+```{r, }
+
+# show bar with breakdown by language (fill)
+# get language from new red list download page - import file
+# ask ackbar to add this to API?
+
+# import the Red List download
+assessments_plants_2018_1 <- read_csv("assessments_plants_2018_1.csv", guess_max = 50000)
+
+# assign the NAs as English
+assessments_plants_2018_1$language[is.na(assessments_plants_2018_1$language)] <- "English"
+
+# query out pre 2003
+assessments_plants_2018_1 = subset(assessments_plants_2018_1, yearPublished >2002)
+
+# plot
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7") 
+rl_language = ggplot(data = assessments_plants_2018_1, aes(x = factor(yearPublished), fill = language))
+rl_language = rl_language + geom_bar() +
+  theme_minimal() +
+  scale_fill_manual(values=cbPalette) +
+  labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "")
+
+ggplotly(
+  rl_language
+)
+
+```
+
