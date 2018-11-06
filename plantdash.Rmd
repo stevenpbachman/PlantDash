@@ -1,0 +1,130 @@
+---
+title: "Plant - Red List Dashboard"
+author: By Steven Bachman 
+output: 
+  flexdashboard::flex_dashboard:
+  #orientation: rows
+  vertical_layout: fill
+theme: bootstrap
+source_code: embed
+runtime: shiny
+---
+  
+  
+```{r setup, include=FALSE}
+#deployApp()
+library(tidyverse)
+
+
+# load data in 'global' chunk so it can be shared by all users of the dashboard
+#all_plants_sp <- read_csv("all.plants.RL_full.csv")
+all.plants.RL_full <- read_csv("all.plants.RL_full.csv", guess_max = 50000)
+
+all_plants_sp = all.plants.RL_full
+
+
+# change the levels to remove old categories
+all_plants_sp$category[all_plants_sp$category=="LR/nt"] = "NT"
+all_plants_sp$category[all_plants_sp$category=="LR/cd"] = "LC"
+all_plants_sp$category[all_plants_sp$category=="LR/lc"] = "LC"
+
+# set order of levels
+all_plants_sp$category = factor(all_plants_sp$category, levels = c("EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"))
+
+# set groups
+All_plants = all_plants_sp
+
+Land_plants = subset(all_plants_sp, all_plants_sp$phylum == "TRACHEOPHYTA" | 
+                       all_plants_sp$phylum == "ANTHOCERATOPHYTA" | 
+                       all_plants_sp$phylum == "ANTHOCERATOPHYTA" | 
+                       all_plants_sp$phylum == "MARCHANTIOPHYTA")
+
+Vascular_plants =  subset(all_plants_sp, all_plants_sp$phylum == "TRACHEOPHYTA" )
+
+Seed_plants = subset(all_plants_sp, all_plants_sp$class == "CYCADOPSIDA" |
+                       all_plants_sp$class == "GINKGOOPSIDA" |
+                       all_plants_sp$class == "GNETOPSIDA" |
+                       all_plants_sp$class == "PINOPSIDA" |
+                       all_plants_sp$class == "LILIOPSIDA" |
+                       all_plants_sp$class == "MAGNOLIOPSIDA")
+
+Flowering_plants = subset(all_plants_sp, all_plants_sp$class == "LILIOPSIDA" |
+                            all_plants_sp$class == "MAGNOLIOPSIDA" )
+
+Gymnosperms = subset(all_plants_sp, all_plants_sp$class == "CYCADOPSIDA" |
+                       all_plants_sp$class == "GINKGOOPSIDA" |
+                       all_plants_sp$class == "GNETOPSIDA" |
+                       all_plants_sp$class == "PINOPSIDA" )
+
+Green_Algae = subset(all_plants_sp, all_plants_sp$phylum == "CHAROPHYTA" |
+                       all_plants_sp$phylum == "CHLOROPHYTA")
+
+Mosses = subset(all_plants_sp, all_plants_sp$phylum == "BRYOPHYTA" |
+                  all_plants_sp$phylum == "MARCHANTIOPHYTA" |
+                  all_plants_sp$phylum == "ANTHOCERATOPHYTA")
+
+Red_Algae =  subset(all_plants_sp, all_plants_sp$phylum == "RHODOPHYTA" )
+
+Ferns_and_Allies = subset(all_plants_sp, all_plants_sp$class == "POLYPODIOPSIDA" |
+                            all_plants_sp$class == "LYCOPODIOPSIDA")
+
+# number of described plants using different gorupings - from Nic Lughadha 2016 Counting Counts
+All_plants_tot = 450000 # work this out
+Land_plants_tot = 403911
+Vascular_plants_tot = 383671
+Seed_plants_tot = 370492
+Flowering_plants_tot = 369434
+Gymnosperms_tot = 1200 # work this out
+Green_Algae_tot = 500 # work this out
+Mosses_tot = 500 # work this out
+Red_Algae_tot = 500 # work this out
+Ferns_and_Allies_tot = 500 # work this out
+```
+
+Global status {data-orientation=columns}
+===================================== 
+  Inputs{.sidebar}
+-------------------------------------
+  
+  Red List Version 2018-1
+
+- [IUCN Red List](http://www.iucnredlist.org/)
+
+
+
+
+```{r}
+#multi select
+
+selectInput("Group", label = ("Select plant group"), choices = list("All plants" = "All_plants" , "Land plants" = "Land_plants" , "Vascular plants" = "Vascular_plants", "Seed plants" = "Seed_plants", "Flowering plants" = "Flowering_plants", "Gymnosperms" = "Gymnosperms","Ferns and Allies" = "Ferns_and_Allies", "Mosses" = "Mosses","Green Algae" = "Green_Algae","Red Algae" = "Red_Algae"), 
+            selected = "All_plants")
+
+sliderInput("sliderYear", label = "Select year range", min = 1998, 
+            max = 2018, value = c(1998, 2018), sep = "")
+```
+
+
+
+Bar chart shows number of species in each Red List category for selected group.
+
+Column {data-width=700}
+-------------------------------------
+### Count of species per Red List category
+  
+  ```{r}
+
+renderPlot({
+  
+  myinput = get(input$Group)
+  
+  ggplot(myinput[which(myinput$published_year >= input$sliderYear[1] & 
+                         myinput$published_year <= input$sliderYear[2]),], 
+         aes(category)) + 
+    geom_bar(aes(fill = category)) +
+    theme_minimal() +
+    scale_fill_manual(
+      values = c("#080100", "#4A235A", "#d5392a", "#D35400", "#F1C40F", "#A9DFBF", "#1E8449", "#AAAAAA"),
+      labels = c("EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"),
+      drop = FALSE)
+})
+```
