@@ -330,17 +330,25 @@ Row {data-height=600 .tabset .tabset-fade}
 # filter out <2003 (old assessments, old criteria) and >2017 (2018 not finished yet)
 all_plants_sp_pubyear = subset(all_plants_sp, published_year > 2002 &
                                  published_year < 2018)
+
+# adding in a single record to get a point for 2005 - must be a better way to do this...
+#extralev = data.frame(published_year = "2005", age = "Unknown")
+#all_plants_sp_pubyear = rbind(all_plants_sp_pubyear, extralev)
                                  
 # plot as a bar chart
 ggplotly(
+  
   ggplot(all_plants_sp_pubyear, aes(as.factor(published_year))) +
     geom_bar(fill = "#FF6666") +
     theme_minimal() +
-    labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "")
-)
+    labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "") 
+    ) %>% config(displayModeBar = F)
+
+
 ```
 
 ### Species description vs Red List assessment date
+
 
 ```{r, }
 # load in the data on 
