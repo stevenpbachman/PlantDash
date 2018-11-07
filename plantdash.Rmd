@@ -93,16 +93,16 @@ all_plants_sp$class == "LYCOPODIOPSIDA"
 )
 
 # number of described plants using different gorupings - from Nic Lughadha 2016 Counting Counts
-All_plants_tot = 450000 # work this out
-Land_plants_tot = 403911
-Vascular_plants_tot = 383671
-Seed_plants_tot = 370492
-Flowering_plants_tot = 369434
-Gymnosperms_tot = 1200 # work this out
-Green_Algae_tot = 500 # work this out
-Mosses_tot = 500 # work this out
-Red_Algae_tot = 500 # work this out
-Ferns_and_Allies_tot = 500 # work this out
+All_plants_tot = 417065 # Land plants + Algae
+Land_plants_tot = 403911 # Nic Lughadha 2016 Counting Counts
+Vascular_plants_tot = 383671 # Nic Lughadha 2016 Counting Counts
+Seed_plants_tot = 370492 # Nic Lughadha 2016 Counting Counts
+Flowering_plants_tot = 369434 #Nic Lughadha 2016 Counting Counts
+Gymnosperms_tot = 1052 # IUCN Red List
+Green_Algae_tot = 6050 # IUCN Red List
+Mosses_tot = 16236 # IUCN Red List
+Red_Algae_tot = 7104 # IUCN Red List
+Ferns_and_Allies_tot = 12000 # IUCN Red List
 ```
 
 Global status {data-orientation=columns}
@@ -331,16 +331,21 @@ Row {data-height=600 .tabset .tabset-fade}
 all_plants_sp_pubyear = subset(all_plants_sp, published_year > 2002 &
                                  published_year < 2018)
 
-# adding in a single record to get a point for 2005 - must be a better way to do this...
-#extralev = data.frame(published_year = "2005", age = "Unknown")
-#all_plants_sp_pubyear = rbind(all_plants_sp_pubyear, extralev)
-                                 
+# set published year as factor
+all_plants_sp_pubyear$published_year = as.factor(all_plants_sp_pubyear$published_year)
+
+# now add extra level for 2005 - this doesn;t have any assessments 
+levels(all_plants_sp_pubyear$published_year) = c(levels(all_plants_sp_pubyear$published_year), "2005")
+
 # plot as a bar chart
 ggplotly(
   
   ggplot(all_plants_sp_pubyear, aes(as.factor(published_year))) +
     geom_bar(fill = "#FF6666") +
     theme_minimal() +
+    #scale_x_continuous(breaks = c(2003:2017), 
+    #                 labels = factor(2003:2017), 
+    #                 limits = c(2003,2017)) +
     labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "") 
     ) %>% config(displayModeBar = F)
 
@@ -353,10 +358,6 @@ ggplotly(
 ```{r, }
 # load in the data on 
 diffplot <- read_csv("diffplot.csv", guess_max = 50000)
-
-# adding in a single record to get a point for 2005 - must be a better way to do this...
-extralev = data.frame(published_year = "2005", age = "Unknown")
-diffplot = rbind(diffplot, extralev)
 
 # subset the data on number of new species described
 #tax.nov.plot = subset(tax.nov.year, tax.nov.year$Year >="2003" & tax.nov.year$Year < "2018")
@@ -445,11 +446,7 @@ renderLeaflet({
     setView(lat=10, lng=0, zoom=2) %>%
     addPolygons(fillColor = ~Group,
                 popup = paste(shared_SGs$Group, "<br>", 
-                              "<b><a href=",shared_SGs$Website,">Web link</a></b>", "<br>", 
-                              "<b>Chair: </b>", shared_SGs$Chair,"<br>",
-                              "<b>Chair email: </b>", shared_SGs$Email,"<br>",
-                              "<b>RLA: </b>", shared_SGs$RLA,"<br>",
-                              "<b>RLA email: </b>", shared_SGs$RLA_email,"<br>"),
+                              "<b><a href=",shared_SGs$Website,">Web link</a></b>"),
                 #label = ~Group,
                 stroke = TRUE, 
                 color = "black",
