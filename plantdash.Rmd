@@ -346,8 +346,8 @@ ggplotly(
     #scale_x_continuous(breaks = c(2003:2017), 
     #                 labels = factor(2003:2017), 
     #                 limits = c(2003,2017)) +
-    labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "") 
-    ) %>% config(displayModeBar = F)
+    labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = ""), 
+    tooltip = "count") %>% config(displayModeBar = F, collaborate = FALSE)
 
 
 ```
@@ -378,7 +378,7 @@ fig_2 = ggplot() +
     "Unknown" = "light grey"
   )) +
   scale_x_discrete(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 100))
-ggplotly(fig_2)
+ggplotly(fig_2, tooltip = "count") %>% config(displayModeBar = F, collaborate = FALSE)
 ```
 
 
@@ -414,7 +414,7 @@ theme_minimal() +
 scale_fill_manual(values = cbPalette) +
 labs(x = "Red List Publication Year", y = "Number of plant species assessments", fill = "")
 
-ggplotly(rl_language)
+ggplotly(rl_language, tooltip = "count") %>% config(displayModeBar = F, collaborate = FALSE)
 
 ```
 
